@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: mysql-container
+    ports:
+      - "5433:3306"  # Mapeia a porta 3306 do container para a porta 5433 do host
+    environment:
+      MYSQL_ROOT_PASSWORD: root  # Senha para o usuário root
+      MYSQL_DATABASE: gearGuru  # Nome do banco de dados a ser criado
+      MYSQL_USER: admin  # Nome de usuário
+      MYSQL_PASSWORD: admin  # Senha para o usuário
+    volumes:
+      - mysql_data:/var/lib/mysql  # Persistência dos dados do MySQL
+
+networks:
+  mysql-compose-network:
+    driver: bridge
+volumes:
+  mysql_data:
