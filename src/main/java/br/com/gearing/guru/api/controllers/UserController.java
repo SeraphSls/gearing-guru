@@ -1,24 +1,31 @@
 package br.com.gearing.guru.api.controllers;
 
 
+import br.com.gearing.guru.api.models.UserModel;
+import br.com.gearing.guru.domain.repositories.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class UserController {
 
 
-    @PostMapping
-    public ResponseEntity<String> includeUser(){
+    @Autowired
+    UserRepository repo;
 
-        return  new ResponseEntity<>(HttpStatus.OK);
+    @PostMapping
+    public ResponseEntity<String> includeUser(@RequestBody UserModel usermodel) {
+        repo.save(usermodel.mapToEntity());
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @GetMapping
-    public  ResponseEntity<String> retriveUser(){
-        return  new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity<String> retriveUser() {
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
