@@ -2,6 +2,7 @@ package br.com.gearing.guru.api.controllers;
 
 
 import br.com.gearing.guru.api.models.UserModel;
+import br.com.gearing.guru.application.commands.UserCommands;
 import br.com.gearing.guru.domain.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,13 @@ public class UserController {
 
 
     @Autowired
-    UserRepository repo;
+    UserCommands userCommands;
 
     @PostMapping
     public ResponseEntity<String> includeUser(@RequestBody UserModel usermodel) {
-        repo.save(usermodel.mapToEntity());
-        return new ResponseEntity<>(HttpStatus.OK);
+        //TODO: Colocar a implementação de criptografia de senha
+        userCommands.includeUser(usermodel);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
     @GetMapping
