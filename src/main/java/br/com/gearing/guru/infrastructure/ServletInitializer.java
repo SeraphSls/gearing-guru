@@ -1,4 +1,4 @@
-package br.com.gearing.guru.application;
+package br.com.gearing.guru.infrastructure;
 
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
