@@ -1,18 +1,26 @@
 package br.com.gearing.guru.domain.model.calculation.car;
 
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.*;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "car")
+@Entity
 public class AwdCar implements Car {
 
 
-
-    private double gearRatio; // Relação de marcha
-    private double diferential; // Relação do diferencial
-    private double tire; // Tamanho do pneu em polegadas
+    @Column(nullable = false)
+    private double gearRatio;
+    @Column(nullable = false)// Relação de marcha
+    private double diferential;
+    @Column(nullable = false)// Relação do diferencial
+    private double tire;
+    @Column(nullable = false)// Tamanho do pneu em polegadas
     private double torque; // T
 
 
