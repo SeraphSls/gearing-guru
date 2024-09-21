@@ -1,19 +1,12 @@
 package br.com.gearing.guru.domain.model.car.gearing;
 
 
-import lombok.*;
-
-
-@Getter
-@Setter
 public class AwdCarGearing extends Car implements CarGearing {
 
 
     public AwdCarGearing(double gearRatio, double diferentialRatio, double tireSize, double torque) {
         super(gearRatio, diferentialRatio, tireSize, torque);
     }
-
-
 
     @Override
     public double calculateTotalRatio() {

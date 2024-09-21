@@ -1,13 +1,9 @@
 package br.com.gearing.guru.domain.model.car.gearing;
 
-
-import lombok.Getter;
-import lombok.Setter;
-
-@Getter
-@Setter
 public class RdwCarGearing extends Car implements CarGearing {
 
+
+    private double diferentialRearRatio;
 
     public RdwCarGearing(double gearRatio, double diferentialRatio, double tireSize, double torque) {
         super(gearRatio, diferentialRatio, tireSize, torque);
@@ -15,7 +11,7 @@ public class RdwCarGearing extends Car implements CarGearing {
 
     @Override
     public double calculateTotalRatio() {
-        return 0;
+        return gearRatio * diferentialRatio * diferentialRearRatio;
     }
 
     @Override

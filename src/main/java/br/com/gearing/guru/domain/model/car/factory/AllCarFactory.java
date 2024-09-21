@@ -7,8 +7,6 @@ import br.com.gearing.guru.domain.model.car.gearing.RdwCarGearing;
 
 public class AllCarFactory implements CarFactory {
 
-
-
     @Override
     public CarGearing createAwd(double gearRatio, double diferential, double tire, double torque) {
         return new AwdCarGearing(gearRatio,diferential,tire,torque);

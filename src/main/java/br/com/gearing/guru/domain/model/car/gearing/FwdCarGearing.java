@@ -1,7 +1,8 @@
 package br.com.gearing.guru.domain.model.car.gearing;
 
-public class FwdCarGearing extends Car implements CarGearing{
 
+
+public class FwdCarGearing extends Car implements CarGearing{
 
     public FwdCarGearing(double gearRatio, double diferentialRatio, double tireSize, double torque) {
         super(gearRatio, diferentialRatio, tireSize, torque);
@@ -9,7 +10,7 @@ public class FwdCarGearing extends Car implements CarGearing{
 
     @Override
     public double calculateTotalRatio() {
-        return 0;
+        return  gearRatio * diferentialRatio;
     }
 
     @Override
