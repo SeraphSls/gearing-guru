@@ -7,9 +7,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class CarController {
 
-    @Autowired
+
     private  final CalculationUseCase calculationUseCase;
 
+    @Autowired
     public CarController(CalculationUseCase calculationUseCase) {
         this.calculationUseCase = calculationUseCase;
     }

@@ -2,7 +2,7 @@ package br.com.gearing.guru.infrastructure.jwt.config;
 
 import br.com.gearing.guru.adapters.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -15,12 +15,13 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 
 @Configuration
-public class AuthenticationConfig {
+public class ApplicationConfiguration {
+
+
+   private final UserRepository userRepository;
 
     @Autowired
-    UserRepository userRepository;
-
-    public AuthenticationConfig(UserRepository userRepository) {
+    public ApplicationConfiguration(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

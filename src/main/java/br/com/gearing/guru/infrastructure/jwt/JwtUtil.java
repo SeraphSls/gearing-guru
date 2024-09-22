@@ -20,7 +20,7 @@ import static io.jsonwebtoken.Jwts.builder;
 
 
 @Service
-public class jwtService {
+public class JwtUtil {
 
     @Value("${security.jwt.secret-key}")
     private String secretKey;
