@@ -1,9 +1,11 @@
 package br.com.gearing.guru.adapters.web;
 
 
-import br.com.gearing.guru.adapters.inbound.dto.LoginDTO;
-import br.com.gearing.guru.adapters.inbound.dto.RegisterDTO;
+import br.com.gearing.guru.adapters.input.dto.LoginDTO;
+import br.com.gearing.guru.adapters.input.dto.RegisterDTO;
+import br.com.gearing.guru.adapters.output.dto.LoginResponse;
 import br.com.gearing.guru.application.auth.AuthenticatorService;
+import br.com.gearing.guru.domain.model.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,10 +32,10 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody LoginDTO loginDto) {
-       // String token = authenticationService.loginUser(loginDto);
-        //return ResponseEntity.ok(token);
-
-        return new ResponseEntity<>(HttpStatus.CREATED);
+    public ResponseEntity<LoginResponse> loginUser(@RequestBody LoginDTO loginDto) {
+        User authenticatedUser = authenticationService.loginUser(loginDto);
+        String jwtToken = authenticationService.generateToken(authenticatedUser);
+        LoginResponse loginResponse = new LoginResponse(jwtToken, 360000);
+        return ResponseEntity.ok(loginResponse);
     }
 }

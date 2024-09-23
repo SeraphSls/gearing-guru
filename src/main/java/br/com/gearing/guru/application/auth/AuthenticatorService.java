@@ -1,8 +1,8 @@
 package br.com.gearing.guru.application.auth;
 
 
-import br.com.gearing.guru.adapters.inbound.dto.LoginDTO;
-import br.com.gearing.guru.adapters.inbound.dto.RegisterDTO;
+import br.com.gearing.guru.adapters.input.dto.LoginDTO;
+import br.com.gearing.guru.adapters.input.dto.RegisterDTO;
 import br.com.gearing.guru.application.usecases.usercases.UserCases;
 import br.com.gearing.guru.domain.model.users.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +26,9 @@ public class AuthenticatorService {
 
     public User loginUser(LoginDTO dto) {
         return userUseCases.authenticate(dto);
+    }
+
+    public String generateToken(User user) {
+        return userUseCases.generateToken(user);
     }
 }
