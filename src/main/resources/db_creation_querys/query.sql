@@ -7,6 +7,7 @@ CREATE TABLE users(
 );
 
 
+-- this table wont be used anymore bacause i decided to use mongo to store the calculations and retreive the values
 CREATE TABLE vehicles(
     id SERIAL PRIMARY KEY,
     model VARCHAR(100) NOT NULL,
@@ -16,6 +17,8 @@ CREATE TABLE vehicles(
 );
 
 
+
+-- this table wont be used anymore bacause i decided to use mongo to store the calculations and retreive the values
 CREATE TABLE calculations(
 id SERIAL PRIMARY KEY,
 gear_ratio DECIMAL(5,2) NOT NULL,
