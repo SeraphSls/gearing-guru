@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  build:
+  build_and_deploy:
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -20,34 +20,24 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
       - name: Set Gradlew permissions
         run: chmod +x ./gradlew
+        
       - name: Clean project
         run: ./gradlew clean
+
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-  dependency-submission:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
-        with:
-          java-version: '17'
-          distribution: 'temurin'
-
-      - name: Generate and submit dependency graph
-        uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582
-
-  deploy:
-    name: Deploy to EC2
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the files
-        uses: actions/checkout@v3
+      - name: Check if JAR was created
+        run: |
+          if [ -f ./build/libs/*.jar ]; then
+            echo "JAR file exists."
+          else
+            echo "JAR file does not exist. Exiting."
+            exit 1
+          fi
 
       - name: Copy jar to EC2
         uses: easingthemes/ssh-deploy@main
@@ -57,7 +47,7 @@ jobs:
           SOURCE: "./build/libs/*.jar"  # Copiar apenas o .jar
           REMOTE_HOST: ${{secrets.EC2_HOST}}
           REMOTE_USER: ${{secrets.EC2_USER}}
-          TARGET:  "/home/ec2-user/app"  # Diretório específico para a aplicação
+          TARGET: "/home/ec2-user/app"  # Diretório específico para a aplicação
 
       - name: Restart application on EC2
         run: |
