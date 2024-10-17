@@ -1,4 +1,4 @@
-name: Push-to-EC2
+name: build-deploy-ECS
 
 on:
   push:
@@ -20,10 +20,13 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+
       - name: Set Gradlew permissions
         run: chmod +x ./gradlew
+
       - name: Clean project
         run: ./gradlew clean
+
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
@@ -43,33 +46,28 @@ jobs:
         uses: gradle/actions/dependency-submission@af1da67850ed9a4cedd57bfd976089dd991e2582
 
   deploy:
-    name: Deploy to EC2
+    name: Deploy to ECS
     runs-on: ubuntu-latest
+    needs: build
     steps:
-      - name: Checkout the files
-        uses: actions/checkout@v3
+      - name: Build Docker Image
+        run: docker build -t gearing-app .
 
-      - name: Copy jar to EC2
-        uses: easingthemes/ssh-deploy@main
-        env:
-          SSH_PRIVATE_KEY: ${{secrets.EC2_SSH_KEY}}
-          ARGS: "-rltgoDzvO --delete"
-          SOURCE: "./build/libs/*.jar"  # Copiar apenas o .jar
-          REMOTE_HOST: ${{secrets.EC2_HOST}}
-          REMOTE_USER: ${{secrets.EC2_USER}}
-          TARGET:  "/home/ec2-user/app"  # Diretório específico para a aplicação
-
-      - name: Restart application on EC2
+      - name: Login to Amazon ECR
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{secrets.EC2_SSH_KEY}} ${{secrets.EC2_USER}}@${{secrets.EC2_HOST}} << 'EOF'
-            sudo systemctl restart my-app.service  # Comando para reiniciar o serviço
-          EOF
+          aws ecr get-login-password --region ${{ secrets.AWS_REGION }} | docker login --username AWS --password-stdin ${{ secrets.ECR_URI }}
 
-      - name: Check if application is running
+      - name: Tag Docker Image
         run: |
-          ssh -o StrictHostKeyChecking=no -i ${{secrets.EC2_SSH_KEY}} ${{secrets.EC2_USER}}@${{secrets.EC2_HOST}} << 'EOF'
-            curl -f http://localhost:8080/health || exit 1  # Verificar status da aplicação
-          EOF
+          docker tag gearing-app ${{ secrets.ECR_URI }}/gering-guru/images:latest
+
+      - name: Push Docker Image to ECR
+        run: |
+          docker push ${{ secrets.ECR_URI }}/gering-guru/images:latest
+
+      - name: Deploy to ECS
+        run: |
+          aws ecs update-service --cluster nome-do-cluster --service gearing-app --force-new-deployment --region ${{ secrets.AWS_REGION }}
 
       - name: Notify success
         if: success()
