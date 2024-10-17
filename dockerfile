@@ -10,7 +10,7 @@ COPY gradle gradle/
 COPY src ./src/
 
 # Execute o Gradle para construir o projeto
-RUN RUN chmod +x ./gradlew build --no-daemon
+RUN chmod +x ./gradlew build --no-daemon
 
 # Imagem final para executar a aplicação
 FROM eclipse-temurin:17-jdk
