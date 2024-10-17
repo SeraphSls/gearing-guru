@@ -1,24 +1,28 @@
-# Use a imagem base do JDK apropriada
+# use jdk temurin
 FROM eclipse-temurin:17-jdk AS builder
 
-# Defina o diretório de trabalho
+# define work-directory
 WORKDIR /app
 
-# Copie os arquivos do Gradle e o código fonte
+# copy gradle files from my project and src folder to we can run a build
 COPY build.gradle.kts settings.gradle.kts gradlew ./
 COPY gradle gradle/
 COPY src ./src/
 
-# Execute o Gradle para construir o projeto
-RUN chmod +x ./gradlew build --no-daemon
 
-# Imagem final para executar a aplicação
+# gives gradle adm permission because for SOME REASON HE CANT BUILD WITHOUT!!!!!!!!!!!!!!
+RUN chmod +x ./gradlew
+
+# runs gradle build
+RUN ./gradlew build --no-daemon
+
+# USE TEMURIN TO BUILD APP
 FROM eclipse-temurin:17-jdk
 
 WORKDIR /app
 
-# Copie o jar gerado para a nova imagem
+# copy the jar from the build
 COPY --from=builder /app/build/libs/*.jar app.jar
 
-# Comando para executar a aplicação
+# execute finaly
 ENTRYPOINT ["java", "-jar", "app.jar"]
