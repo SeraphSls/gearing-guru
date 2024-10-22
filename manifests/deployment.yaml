@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: deploy-aks
+  labels:
+    app: deploy-aks
+    kubernetes.azure.com/generator: devhub
+  namespace: namespace-workflow-1729556805250
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: deploy-aks
+  template:
+    metadata:
+      labels:
+        app: deploy-aks
+    spec:
+      containers:
+        - name: deploy-aks
+          image: acrworkflow1729556805250.azurecr.io/image-workflow-1729556805250:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
