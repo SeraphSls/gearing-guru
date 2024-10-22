@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Gatilho para disparo manual
+  workflow_dispatch:
 
 jobs:
   build:
@@ -32,12 +32,8 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: Log in to ACR
-        uses: azure/docker-login@v1
-        with:
-          username: ${{ secrets.ACR_USERNAME }}
-          password: ${{ secrets.ACR_PASSWORD }}
-          registry: gearingregistry.azurecr.io
+      - name: Log in to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
       - name: Build Docker Image
         run: |
@@ -55,12 +51,12 @@ jobs:
         uses: azure/setup-aks@v1
         with:
           azure-subscription: ${{ secrets.AZURE_SUBSCRIPTION }}
-          azure-resource-group: gearing-guru  # Substitua pelo nome do seu grupo de recursos
-          azure-aks-name: gearing-cluster  # Substitua pelo nome do seu AKS
+          azure-resource-group: gearing-guru
+          azure-aks-name: gearing-cluster
 
       - name: Deploy to AKS
         run: |
-          kubectl set image deployment/gearingrest myapp=gearingregistry.azurecr.io/myapp:${{ github.sha }}
+          kubectl set image deployment/gearingrest myapp=gearingregistry.azurecr.io/gearingrest:${{ github.sha }}
           kubectl rollout status deployment/gearingrest
 
       - name: Notify success
