@@ -21,7 +21,7 @@ Gearing Guru was created to prove my qualifications as a developer and also to p
 - **Backend**: [Java, Spring Boot, Spring JPA, Mongo Native Driver]
 - **Frontend**: [Angular]
 - **Data bases**: [PostgreSQL, MongoDB Atlas Cluster]
-- **Others**: [Docker, Jenkins, Github Actions, EC2]
+- **Others**: [Docker,Github Actions, miniKube ]
 
 
 
