@@ -32,8 +32,9 @@ jobs:
       - name: Build with Gradle Wrapper
         run: ./gradlew build
 
-      - name: Log in to Docker Hub
-        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+      - name: Log in to Azure Container Registry
+        run: |
+          echo "${{ secrets.AZURE_CLIENT_SECRET }}" | docker login gearingregistry.azurecr.io -u "${{ secrets.AZURE_CLIENT_ID }}" --password-stdin
 
       - name: Build Docker Image
         run: |
