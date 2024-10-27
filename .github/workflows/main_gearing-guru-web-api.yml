@@ -21,6 +21,9 @@ jobs:
         with:
           java-version: '17'
 
+      - name: Set permissions for Gradlew
+        run: chmod +x ./gradlew  # Adicionando permissões para o script gradlew
+
       - name: Build with Gradle
         run: ./gradlew build
 
